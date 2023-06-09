@@ -73,6 +73,23 @@ class DataProviderService:
 
         return post_detail
 
+    #Delete a post
+    def delete_post(self, post_id):
+        current_post = DataProviderService().get_post(post_id=post_id)
+
+        if current_post:
+            sql_delete_post = """ DELETE FROM post WHERE id = %s  """
+            try:
+                self.cursor.execute(sql_delete_post, post_id)
+                self.conn.commit()
+                return True
+            except pymysql.Error as exc:
+                self.conn.rollback()
+                print(exc)
+                return False
+        return False
+
+
     # Update a post
     def update_post(self, post_id, new_post):
         updated_post = None
@@ -130,8 +147,6 @@ class DataProviderService:
         new_user = self.cursor.fetchone()
         print(new_user)
         return new_user
-
-
 
     # Get posts by title keywords
     def get_post_by_title(self, title):

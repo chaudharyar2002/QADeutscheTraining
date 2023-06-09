@@ -73,6 +73,15 @@ def update_post(post_id):
         return jsonify({"post": updated_post})
 
 
+def delete_post(post_id):
+    deleted = DATA_PROVIDER.delete_post(post_id)
+
+    if deleted:
+        return jsonify({'message': 'Post deleted'})
+    else:
+        return jsonify({'message': 'Error in deleting post'})
+
+
 def register():
     new_user_id = None
     try:
@@ -106,7 +115,6 @@ def login():
         return resp
     else:
         abort(404)
-
 
 
 # get post by title
